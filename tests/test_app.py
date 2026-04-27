@@ -65,6 +65,18 @@ def test_signup_activity_not_found(client):
     assert response.json()["detail"] == "Activity not found"
 
 
+def test_signup_invalid_email_returns_validation_error(client):
+    # Arrange
+    activity_name = "Chess Club"
+    invalid_email = "not-an-email"
+
+    # Act
+    response = client.post(f"/activities/{activity_name}/signup?email={invalid_email}")
+
+    # Assert
+    assert response.status_code == 422
+
+
 def test_signup_max_participants_exceeded(client):
     # Arrange
     activity_name = "Chess Club"
@@ -125,3 +137,15 @@ def test_unregister_activity_not_found(client):
     # Assert
     assert response.status_code == 404
     assert response.json()["detail"] == "Activity not found"
+
+
+def test_unregister_invalid_email_returns_validation_error(client):
+    # Arrange
+    activity_name = "Chess Club"
+    invalid_email = "not-an-email"
+
+    # Act
+    response = client.delete(f"/activities/{activity_name}/unregister?email={invalid_email}")
+
+    # Assert
+    assert response.status_code == 422
